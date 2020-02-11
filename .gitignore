@@ -1,0 +1,6 @@
+# Settings. Selected files can be added manually if necessary.
+**/.vscode
+
+# Build files & logs.
+**/node_modules
+**/*.log
