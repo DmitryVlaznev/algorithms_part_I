@@ -118,43 +118,119 @@ class MergeSort {
      *
      * @param {*} arr Array of numbers
      */
-    bottomUp(arr) {}
+    bottomUp(arr) {
+        const l = arr.length;
+        if (l < 2) {
+            return;
+        }
+        this._init(arr);
+
+        for (let start = 0; start < l; start += 2) {
+            if (arr[start + 1] < arr[start]) {
+                [arr[start + 1], arr[start]] = [arr[start], arr[start + 1]];
+            }
+        }
+        for (let part = 2; part < l; part = part + part) {
+            for (let start = 0; start < l; start += part + part) {
+                const mid = start + part - 1;
+                this._merge(arr, start, mid + 1, Math.min(start + part + part - 1, l - 1));
+            }
+        }
+
+        if (!this.sorted(arr, 0, l - 1)) {
+            console.log("----", arr);
+            throw Error("Recursive sorting is failed.");
+        }
+    }
 }
 
-const test = new MergeSort();
+function testRecursive() {
+    console.log("----- Recursive test -----");
+    const test = new MergeSort();
 
-let arr = [1];
-test.recursive(arr);
-console.log(">>> ", arr);
+    let arr = [1];
+    test.recursive(arr);
+    console.log(">>> ", arr);
 
-arr = [1, 2];
-test.recursive(arr);
-console.log(">>> ", arr);
+    arr = [1, 2];
+    test.recursive(arr);
+    console.log(">>> ", arr);
 
-arr = [2, 1];
-test.recursive(arr);
-console.log(">>> ", arr);
+    arr = [2, 1];
+    test.recursive(arr);
+    console.log(">>> ", arr);
 
-arr = [2, 3, 1];
-test.recursive(arr);
-console.log(">>> ", arr);
+    arr = [2, 3, 1];
+    test.recursive(arr);
+    console.log(">>> ", arr);
 
-arr = [2, 1, 3, 2];
-test.recursive(arr);
-console.log(">>> ", arr);
+    arr = [2, 1, 3, 2];
+    test.recursive(arr);
+    console.log(">>> ", arr);
 
-arr = [2, 1, 3, 2, 5];
-test.recursive(arr);
-console.log(">>> ", arr);
+    arr = [2, 1, 3, 2, 5];
+    test.recursive(arr);
+    console.log(">>> ", arr);
 
-arr = [42, 2, 1, 3, 2, 5];
-test.recursive(arr);
-console.log(">>> ", arr);
+    arr = [42, 2, 1, 3, 2, 5];
+    test.recursive(arr);
+    console.log(">>> ", arr);
 
-arr = Array.apply(null, new Array(20)).map(x => Math.floor(Math.random() * 20));
-test.recursive(arr);
-console.log(">>> ", arr);
+    arr = Array.apply(null, new Array(20)).map(x => Math.floor(Math.random() * 20));
+    test.recursive(arr);
+    console.log(">>> ", arr);
 
-arr = Array.apply(null, new Array(19)).map(x => Math.floor(Math.random() * 100));
-test.recursive(arr);
-console.log(">>> ", arr);
+    arr = Array.apply(null, new Array(19)).map(x => Math.floor(Math.random() * 100));
+    test.recursive(arr);
+    console.log(">>> ", arr);
+    console.log("--------------------------");
+    console.log("");
+}
+
+function testBottomUp() {
+    console.log("----- Bottom up test -----");
+
+    const test = new MergeSort();
+
+    let arr = [1];
+    test.recursive(arr);
+    console.log(">>> ", arr);
+
+    arr = [1, 2];
+    test.recursive(arr);
+    console.log(">>> ", arr);
+
+    arr = [2, 1];
+    test.recursive(arr);
+    console.log(">>> ", arr);
+
+    arr = [2, 3, 1];
+    test.recursive(arr);
+    console.log(">>> ", arr);
+
+    arr = [2, 1, 3, 2];
+    test.recursive(arr);
+    console.log(">>> ", arr);
+
+    arr = [2, 1, 3, 2, 5];
+    test.recursive(arr);
+    console.log(">>> ", arr);
+
+    arr = [42, 2, 1, 3, 2, 5];
+    test.recursive(arr);
+    console.log(">>> ", arr);
+
+    arr = Array.apply(null, new Array(20)).map(x => Math.floor(Math.random() * 20));
+    test.bottomUp(arr);
+    console.log(">>> ", arr);
+
+    arr = Array.apply(null, new Array(19)).map(x => Math.floor(Math.random() * 100));
+    test.bottomUp(arr);
+    console.log(">>> ", arr);
+    console.log("--------------------------");
+    console.log("");
+}
+
+
+testRecursive();
+testBottomUp();
