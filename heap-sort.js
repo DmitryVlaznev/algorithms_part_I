@@ -90,11 +90,25 @@ class MaxBinaryHeap {
     /**
      * Sort a heap array.
      *
-     * @param {boolean} inPlace If true, make a cope of a current heap and
+     * @param {boolean} restore If true, make a copy of a current heap and
      * restore it after sorting.
      */
-    sort(inPlace = true) {
+    sort(restore = true) {
+        let heapCopy;
+        if (restore) {
+            heapCopy = this.heap.slice();
+        }
 
+        while(this.size > 1) {
+            [this.heap[this.size--], this.heap[1]] = [this.heap[1], this.heap[this.size]];
+            this.sink(1);
+        }
+
+        const res = this.heap.slice(1);
+        if (restore) {
+            this.heap = heapCopy;
+        }
+        return res;
     }
 
     /**
@@ -104,13 +118,24 @@ class MaxBinaryHeap {
         return `[${this.heap.slice(1).join(", ")}]`
     }
 }
-let h = new MaxBinaryHeap([1, 2, 3, 4]);
-console.log(h.toString());
-h = new MaxBinaryHeap([1, 2, 3, 4, 5]);
-console.log(h.toString());
-h = new MaxBinaryHeap([1, 2, 3, 4, 5, 6]);
-console.log(h.toString());
-h = new MaxBinaryHeap([1, 2, 3, 4, 5, 6, 7]);
-console.log(h.toString());
-h = new MaxBinaryHeap([1, 2, 3, 4, 5, 6, 7, 8]);
-console.log(h.toString());
+let h;
+
+// h = new MaxBinaryHeap([1, 2, 3, 4]);
+// console.log(h.toString());
+// h = new MaxBinaryHeap([1, 2, 3, 4, 5]);
+// console.log(h.toString());
+// h = new MaxBinaryHeap([1, 2, 3, 4, 5, 6]);
+// console.log(h.toString());
+// h = new MaxBinaryHeap([1, 2, 3, 4, 5, 6, 7]);
+// console.log(h.toString());
+// h = new MaxBinaryHeap([1, 2, 3, 4, 5, 6, 7, 8]);
+// console.log(h.toString());
+
+h = new MaxBinaryHeap([5, 2, 3, 1, 4]);
+console.log(">>> ", h.sort().join(", "));
+
+h = new MaxBinaryHeap(Array.apply(null, new Array(20)).map(x => Math.floor(Math.random() * 20)));
+console.log(">>> ", h.sort().join(", "));
+
+h = new MaxBinaryHeap(Array.apply(null, new Array(20)).map(x => Math.floor(Math.random() * 100)));
+console.log(">>> ", h.sort().join(", "));
