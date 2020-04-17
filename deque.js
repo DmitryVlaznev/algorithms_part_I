@@ -24,21 +24,10 @@
 // Additionally, your iterator implementation must support each
 // operation (including construction) in constant worst-case time.
 
-// *********************************************************************
-// Custom exceptions
-// *********************************************************************
-class IllegalArgumentException extends Error {
-    constructor(message) {
-        super(message);
-        this.name = "IllegalArgumentException";
-    }
-}
-class NoSuchElementException extends Error {
-    constructor(message) {
-        super(message);
-        this.name = "NoSuchElementException";
-    }
-}
+const {
+    IllegalArgumentException,
+    NoSuchElementException,
+} = require("./custom-exceptions");
 
 // *********************************************************************
 // Deque list node class
@@ -140,9 +129,7 @@ class Deque {
      */
     removeFirst() {
         if (!this.head) {
-            throw new NoSuchElementException(
-                "The deque is empty",
-            );
+            throw new NoSuchElementException("The deque is empty");
         }
 
         const node = this.head;
@@ -163,9 +150,7 @@ class Deque {
      */
     removeLast() {
         if (!this.tail) {
-            throw new NoSuchElementException(
-                "The deque is empty",
-            );
+            throw new NoSuchElementException("The deque is empty");
         }
         const node = this.tail;
         this.tail = this.tail.prev;
@@ -190,7 +175,7 @@ class Deque {
                     pointer = pointer.next;
                     return value;
                 }
-                return { done: true};
+                return { done: true };
             },
         };
     }
@@ -258,7 +243,9 @@ const iterator = () => {
     d.addFirst(2);
     d.addFirst(1);
     console.log("size [9] =>", d.size());
-    console.log(">>> Check the iterable protocol and a spread operator applied to a deque");
+    console.log(
+        ">>> Check the iterable protocol and a spread operator applied to a deque",
+    );
     console.log("iterate [ 1, 2, 3, 4, 5, 6, 7, 8, 9 ] =>", [...d]);
 
     console.log(">>> Check two iterators simultaneously");

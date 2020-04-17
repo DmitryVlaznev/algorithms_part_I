@@ -27,21 +27,10 @@
 // time; you may (and will need to) use a linear amount of extra memory
 // per iterator.
 
-// *********************************************************************
-// Custom exceptions
-// *********************************************************************
-class IllegalArgumentException extends Error {
-    constructor(message) {
-        super(message);
-        this.name = "IllegalArgumentException";
-    }
-}
-class NoSuchElementException extends Error {
-    constructor(message) {
-        super(message);
-        this.name = "NoSuchElementException";
-    }
-}
+const {
+    IllegalArgumentException,
+    NoSuchElementException,
+} = require("./custom-exceptions");
 
 // *********************************************************************
 // Randomized queue
@@ -163,9 +152,7 @@ class RandomizedQueue {
      * Return an independent iterator over items in random order.
      */
     [Symbol.iterator]() {
-        const indices = Array.apply(null, new Array(this._size)).map(
-            (v, i) => i,
-        );
+        const indices = Array.apply(null, new Array(this._size)).map((v, i) => i);
 
         // Randomize an array using Fisher–Yates shuffle
         // https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
@@ -288,7 +275,9 @@ const iterator = () => {
     rq.enqueue(7);
     rq.enqueue(8);
     rq.enqueue(9);
-    console.log(">>> Check the iterable protocol and a spread operator applied to a queue");
+    console.log(
+        ">>> Check the iterable protocol and a spread operator applied to a queue",
+    );
     console.log("randomized [1..9] =>", [...rq]);
     console.log("randomized [1..9] =>", [...rq]);
     console.log(".........................complete");
