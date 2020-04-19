@@ -206,12 +206,6 @@ class Board {
             yield new Board(board);
         }
     }
-
-    /**
-     * A board that is obtained by exchanging any pair of tiles.
-     * @returns {Board}
-     */
-    twin() {}
 }
 
 class Solver {
@@ -232,7 +226,36 @@ class Solver {
         this._processed = new Set();
         this._processed.add(initial.toString());
 
+        let pq = new PriorityQueue();
+        pq.enqueue(initial, initial.manhattan());
+
         this._solution = [];
+        let target = null;
+        while (pq.size) {
+            const { element: board } = pq.dequeue();
+            if (board.isGoal()) {
+                target = board;
+                break;
+            }
+            for (const item of board.neighbors()) {
+                if (this._processed.has(item.toString())) {
+                    continue;
+                }
+                this._processed.add(item.toString());
+                this._parents.set(item, board);
+                pq.enqueue(item, item.manhattan());
+            }
+        }
+
+        if (target) {
+            // Fill the solution.
+            while (target) {
+                this._solution.push(target);
+                target = this._parents.get(target);
+            }
+            this._solution.reverse();
+            return;
+        }
     }
 
     /**
@@ -263,46 +286,32 @@ class Solver {
     }
 }
 
-// const t = [
-//     [8, 1, 3],
-//     [4, 0, 2],
-//     [7, 6, 5],
-// ];
-// const b = new Board(t);
-// console.log("hamming (5) = ", b.hamming());
-// console.log("manhattan (10) = ", b.manhattan());
+const t1 = [
+    [0, 1, 3],
+    [4, 2, 5],
+    [7, 8, 6],
+];
+const s1 = new Solver(new Board(t1));
+if (s1.isSolvable()) {
+    for (const b of s1.solution()) {
+        console.log(b.toString());
+    }
+} else {
+    console.log("UNSOLVABLE!!!");
+    console.log(new Board(t1).toString());
+}
 
-// const t = [
-//     [0, 1, 3],
-//     [4, 2, 5],
-//     [7, 8, 6],
-// ];
-// const b = new Board(t);
-// const s = new Solver(b);
-
-let q = new PriorityQueue();
-q.enqueue(2, 2);
-q.enqueue(1, 1);
-q.enqueue(42, 42);
-q.enqueue(1024, 1024);
-
-console.log(">>>>> q", q.toString());
-
-q = new PriorityQueue(false);
-q.enqueue(2, 2);
-q.enqueue(1, 1);
-q.enqueue(42, 42);
-q.enqueue(1024, 1024);
-
-console.log(">>>>> q", q.toString());
-
-// console.log("hamming (4) = ", b.hamming());
-// console.log("manhattan (4) = ", b.manhattan());
-
-// const g = b.neighbors();
-// for (let b of g) {
-//     console.log(b.toString());
-// }
-
-// const b = new Board(Board.generateRandomBoard(3))
-// console.log(b.toString());
+const t2 = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [8, 7, 0],
+];
+const s2 = new Solver(new Board(t2));
+if (s2.isSolvable()) {
+    for (const b of s2.solution()) {
+        console.log(b.toString());
+    }
+} else {
+    console.log("UNSOLVABLE!!!");
+    console.log(new Board(t2).toString());
+}

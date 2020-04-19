@@ -22,6 +22,15 @@ class PriorityQueue {
     }
 
     /**
+     * Return the size of the queue.
+     *
+     * @returns {number}
+     */
+    get size() {
+        return this.heap.length - 1;
+    }
+
+    /**
      * Add an element with a priority to the queue.
      *
      * @param {*} element
@@ -31,7 +40,7 @@ class PriorityQueue {
         const item = new QElement(element, priority);
         this.heap.push(item);
 
-        let index = this.size();
+        let index = this.size;
         let parent = parseInt(index / 2);
         while (index > 1 && this.higher(this.heap[index], this.heap[parent])) {
             [this.heap[index], this.heap[parent]] = [
@@ -54,14 +63,14 @@ class PriorityQueue {
             throw new NoSuchElementException("The queue is empty.");
         }
 
-        [this.heap[1], this.heap[this.size()]] = [this.heap[this.size()], this.heap[1]];
+        [this.heap[1], this.heap[this.size]] = [this.heap[this.size], this.heap[1]];
 
         const item = this.heap.pop();
         let index = 1;
-        while (index * 2 <= this.size()) {
+        while (index * 2 <= this.size) {
             let child = index * 2;
             if (
-                child + 1 <= this.size() &&
+                child + 1 <= this.size &&
                 this.higher(this.heap[child + 1], this.heap[child])
             ) {
                 child++;
@@ -94,15 +103,6 @@ class PriorityQueue {
     }
 
     /**
-     * Return the size of the queue.
-     *
-     * @returns {number}
-     */
-    size() {
-        return this.heap.length - 1;
-    }
-
-    /**
      * Return an element with the highest priority.
      * Do not remove it from the queue.
      *
@@ -125,7 +125,7 @@ class PriorityQueue {
         if (this.isEmpty()) {
             throw new NoSuchElementException("The queue is empty.");
         }
-        return this.heap[this.size()];
+        return this.heap[this.size];
     }
 
     /**
@@ -134,7 +134,7 @@ class PriorityQueue {
      * @returns {boolean}
      */
     isEmpty() {
-        return this.size() == 0;
+        return this.size == 0;
     }
 
     /**
